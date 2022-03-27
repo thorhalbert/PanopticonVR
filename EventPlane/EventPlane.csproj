@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\thorh\.nuget\packages\librdkafka.redist\1.8.2\build\..\runtimes\win-x64\native\**" />
+    <Content Remove="C:\Users\thorh\.nuget\packages\librdkafka.redist\1.8.2\build\..\runtimes\win-x86\native\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GuerrillaNtp" Version="2.0.1" />
+    <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventPlaneMessages\EventPlaneMessages.csproj" />
+    <ProjectReference Include="..\Google.Protobuf\Google.Protobuf.csproj" />
+    <ProjectReference Include="..\ThirdParty\Confluent.Kafka\Confluent.Kafka.csproj" />
+    <ProjectReference Include="..\ThirdParty\Confluent.SchemaRegistry.Serdes.Protobuf\Confluent.SchemaRegistry.Serdes.Protobuf.csproj" />
+    <ProjectReference Include="..\ThirdParty\Confluent.SchemaRegistry\Confluent.SchemaRegistry.csproj" />
+  </ItemGroup>
+
+</Project>

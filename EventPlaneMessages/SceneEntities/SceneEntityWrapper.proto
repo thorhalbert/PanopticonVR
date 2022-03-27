@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option csharp_namespace = "PanopticonEventSceneEntities";
+
+package SceneEntities;
+
+message Uuid {
+	bytes UuidBytes=10;
+}
+
+message Vector3 {
+	double X=10;
+	double Y=20;
+	double Z=30;
+}
+
+enum PrivatePayloadTypes {
+	No_Payload = 0;				// Payload will be empty
+	Payload_Json = 1;			// Anything can do this, but inefficient
+	Payload_Bson = 2;			// Wasm can do, mildly efficient, and schemaless
+	Payload_Protobuf = 10;		// Can't do this until we can make protos in wasm
+}
+
+message EntityChanged {
+	// Identifier
+	Uuid InstanceId=10;		// Actual Id of this Entity
+	Uuid EntityClass=20;	// Handler Class for this Entity Type
+	Uuid InternalId=30;		// Private subtypes for Handler (may be empty)
+
+	Uuid Reporter=100;		// Which client is reporting on status
+
+	// Current Information
+	fixed64 LastTick=200;	// Last time we heard from the object
+	Vector3 Position=210;	// Where was at last tick
+	Vector3 Rotation=220;	// Orientation
+	Vector3 Scale=230;		// Current Size (though we may get rid of this -- the entity should control)
+	Vector3 Velocity=240;	// So we can estimate tweening
+	Vector3 Acceleration=250;  // Again for tweening estimate
+	fixed64 LastMoveTick=290;  // Last time we moved
+
+	// Private state Information
+	PrivatePayloadTypes PrivateType=300;	// May be none
+	bytes PayloadContents=310;				// and correspondingly empty
+
+	// In motion - current vectors
+}

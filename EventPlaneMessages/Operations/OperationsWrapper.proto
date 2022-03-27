@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option csharp_namespace = "PanopticonEventPlaneOperations";
+
+package Operations;
+
+
+// The request message containing the user's name.
+message Ping {
+  string name = 1;
+}
+
+// The response message containing the greetings.
+message Pong {
+  string message = 1;
+}
+
+
+enum MemberRoles {
+	NoRole = 0;
+
+	VRClient = 1;
+	GamingClient = 2;
+
+	EmissaryProcessor=10;
+	PhysicsArbitrator=11;
+	SecurityAuditor=12;
+}
+
+message ClusterHeartbeats {
+	//Uuid MemberId=10;
+	repeated MemberRoles Roles=20;
+	int32 NominalHearbeatInterval=30;
+}
+
+enum LogTypes {
+	None=0;
+	Log=1;			// Debug.Log
+	Console=2;		// Console.Write
+	Debug=3;
+	Info=4;
+	Warn=5;
+	Severe=6;
+	Fatal=7;
+}
+
+message LogMessages {
+	LogTypes LogType = 1;
+	string Message = 2;
+	string StackTrace = 3;
+}
+
+message MainMessages {
+	oneof MessageTypes {
+		ClusterHeartbeats Heartbeat = 10;
+		LogMessages LogMessage = 20;
+	}
+	int32 SessionSequence=100;
+	int64 TimeTicks=110;
+	int64 OffsetTicks=120;
+}
