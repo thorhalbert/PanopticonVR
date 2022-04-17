@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="GuerrillaNtp" Version="2.0.1" />
+    <PackageReference Include="MQTTnet" Version="4.0.0-preview5" />
     <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
   </ItemGroup>
 

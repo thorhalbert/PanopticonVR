@@ -13,7 +13,7 @@
   </Target>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventPlane\EventPlane.csproj" />
+    <ProjectReference Include="..\CommandPlane\CommandPlane.csproj" />
   </ItemGroup>
 
 </Project>

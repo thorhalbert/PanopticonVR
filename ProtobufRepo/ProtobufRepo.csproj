@@ -6,12 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\greet.proto" />
+    <None Remove="APIProtos\Login.proto" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.Core" Version="2.45.0" />
-    <PackageReference Include="Grpc.Net.Client" Version="2.45.0-pre1" />
+    <Folder Include="Common\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Grpc.Tools" Version="2.45.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,9 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\greet.proto">
-      <GrpcServices>Both</GrpcServices>
-    </Protobuf>
+    <Protobuf Include="APIProtos\Login.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>
