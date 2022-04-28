@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlane", "EventPlane\Ev
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confluent.Kafka", "ThirdParty\Confluent.Kafka\Confluent.Kafka.csproj", "{44173242-177E-4FED-9583-A918573B4E49}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlaneMessages", "EventPlaneMessages\EventPlaneMessages.csproj", "{DEED69B3-909E-4BAA-9F24-ADDBF19EF902}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllPlaneMessages", "EventPlaneMessages\AllPlaneMessages.csproj", "{DEED69B3-909E-4BAA-9F24-ADDBF19EF902}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confluent.SchemaRegistry.Serdes.Protobuf", "ThirdParty\Confluent.SchemaRegistry.Serdes.Protobuf\Confluent.SchemaRegistry.Serdes.Protobuf.csproj", "{D5B8089D-43A1-48D7-977F-93552C32FAEE}"
 EndProject
@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmissaryControl", "Emissary
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProtobufRepo", "ProtobufRepo\ProtobufRepo.csproj", "{F52C9F42-7BA8-4C61-8170-3C7376D2F113}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandPlane", "CommandPlane\CommandPlane.csproj", "{2FFB26DD-1562-415E-94B9-72826B82E498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControlPlane", "CommandPlane\ControlPlane.csproj", "{2FFB26DD-1562-415E-94B9-72826B82E498}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MQTTnet", "ThirdParty\MQTTnet\MQTTnet.csproj", "{2FA9EA56-100A-4FCE-9120-5E026176633E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{2FFB26DD-1562-415E-94B9-72826B82E498}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FFB26DD-1562-415E-94B9-72826B82E498}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FFB26DD-1562-415E-94B9-72826B82E498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FA9EA56-100A-4FCE-9120-5E026176633E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FA9EA56-100A-4FCE-9120-5E026176633E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FA9EA56-100A-4FCE-9120-5E026176633E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FA9EA56-100A-4FCE-9120-5E026176633E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{44173242-177E-4FED-9583-A918573B4E49} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
 		{D5B8089D-43A1-48D7-977F-93552C32FAEE} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
 		{40241342-9250-4401-B39D-9F2421C7E70A} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
+		{2FA9EA56-100A-4FCE-9120-5E026176633E} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B73B5CC1-2697-4063-9EEE-07AFC5690A8F}

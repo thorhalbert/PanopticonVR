@@ -4,6 +4,8 @@
 
 Console.WriteLine("Hello, World!");
 
+ControlPlane.PlaneSingleton.Test("Test");
+
 
 // We can test here
 

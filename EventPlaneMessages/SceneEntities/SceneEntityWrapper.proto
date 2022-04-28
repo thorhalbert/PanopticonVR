@@ -38,6 +38,8 @@ message EntityChanged {
 	Vector3 Acceleration=250;  // Again for tweening estimate
 	fixed64 LastMoveTick=290;  // Last time we moved
 
+	Uuid InsideObject=400;	// We're bound onto this object - all above are relative to it's origin
+
 	// Private state Information
 	PrivatePayloadTypes PrivateType=300;	// May be none
 	bytes PayloadContents=310;				// and correspondingly empty
