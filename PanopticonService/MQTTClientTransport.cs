@@ -60,11 +60,15 @@ namespace PanopticonService
 
         private Task MqttClient_ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
         {
-            var msg = arg.ApplicationMessage;
+          
             var tag = arg.Tag;
             var client = arg.ClientId;
+   
+            var topic = arg.ApplicationMessage.Topic;
+            var typ = arg.ApplicationMessage.ContentType;
+            var msg = arg.ApplicationMessage.ConvertPayloadToString();
 
-            Console.WriteLine($"Msg: {msg} Tag: {tag} Client: {client}");
+            Console.WriteLine($"Topic: {topic} Tag: {tag} Client: {client} Msg: {msg}");
 
             return null;
         }

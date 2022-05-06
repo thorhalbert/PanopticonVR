@@ -35,7 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControlPlane", "CommandPlan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MQTTnet", "ThirdParty\MQTTnet\MQTTnet.csproj", "{2FA9EA56-100A-4FCE-9120-5E026176633E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoLayer", "MongoLayer\MongoLayer.csproj", "{D0D2AECD-2AA8-4185-BF12-B7D948B4554E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoLayer", "MongoLayer\MongoLayer.csproj", "{D0D2AECD-2AA8-4185-BF12-B7D948B4554E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MQTTnet.Extensions.Rpc", "ThirdParty\MQTTnet.Extensions.Rpc\MQTTnet.Extensions.Rpc.csproj", "{2F6D46BC-02D4-456D-9F34-1645B68E0846}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +109,10 @@ Global
 		{D0D2AECD-2AA8-4185-BF12-B7D948B4554E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0D2AECD-2AA8-4185-BF12-B7D948B4554E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0D2AECD-2AA8-4185-BF12-B7D948B4554E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F6D46BC-02D4-456D-9F34-1645B68E0846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F6D46BC-02D4-456D-9F34-1645B68E0846}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F6D46BC-02D4-456D-9F34-1645B68E0846}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F6D46BC-02D4-456D-9F34-1645B68E0846}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +123,7 @@ Global
 		{D5B8089D-43A1-48D7-977F-93552C32FAEE} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
 		{40241342-9250-4401-B39D-9F2421C7E70A} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
 		{2FA9EA56-100A-4FCE-9120-5E026176633E} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
+		{2F6D46BC-02D4-456D-9F34-1645B68E0846} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B73B5CC1-2697-4063-9EEE-07AFC5690A8F}

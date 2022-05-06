@@ -19,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProtobufRepo\ProtobufRepo.csproj" />
+    <ProjectReference Include="..\ThirdParty\MQTTnet.Extensions.Rpc\MQTTnet.Extensions.Rpc.csproj" />
     <ProjectReference Include="..\ThirdParty\MQTTnet\MQTTnet.csproj" />
   </ItemGroup>
 

@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <None Remove="APIProtos\Login.proto" />
+    <None Remove="APIProtos\Ping.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +27,7 @@
 
   <ItemGroup>
     <Protobuf Include="APIProtos\Login.proto" GrpcServices="Client" />
+    <Protobuf Include="APIProtos\Ping.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>
