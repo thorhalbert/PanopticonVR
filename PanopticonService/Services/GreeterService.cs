@@ -15,10 +15,10 @@ namespace PanopticonService
             _logger = logger;
         }
 
-        public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
+        public override Task<HelloReplyX> SayHello(HelloRequestX request, ServerCallContext context)
         {
             Console.WriteLine($"Client sent {request.Name} - {context.Host}, {context.Peer}");
-            return Task.FromResult(new HelloReply
+            return Task.FromResult(new HelloReplyX
             {
                 Message = "Hello " + request.Name
             });

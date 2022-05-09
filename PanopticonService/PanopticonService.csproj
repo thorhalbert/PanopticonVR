@@ -27,6 +27,7 @@
     <ProjectReference Include="..\CommandPlane\ControlPlane.csproj" />
     <ProjectReference Include="..\EventPlane\EventPlane.csproj" />
     <ProjectReference Include="..\MongoLayer\MongoLayer.csproj" />
+    <ProjectReference Include="..\ProtobufRepo\ProtobufRepo.csproj" />
   </ItemGroup>
 
   <ItemGroup>
