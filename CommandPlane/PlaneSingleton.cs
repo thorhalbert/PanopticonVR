@@ -1,6 +1,8 @@
-﻿using MQTTnet;
+﻿using Grpc.Core;
+using MQTTnet;
 using MQTTnet.Client;
-using PanopticonAPIs;
+using ProtobufRepo;
+//using PanopticonAPIs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,14 +19,16 @@ namespace ControlPlane
     public class Log
     {
 
-        public async static void  DebugCallback(string condition, string stacktrace, int type)
+        public async static Task  DebugCallback(string condition, string stacktrace, int type)
         {
-            await PlaneSingleton.SendMessage($"Oculus: {type} {condition}");
+            if (PlaneSingleton.PlaneSingletonInstance == null) return;
+            await PlaneSingleton.PlaneSingletonInstance.SendMessage($"Oculus: {type} {condition} {stacktrace}");
         }
 
-        public static async void UnityConsole(string str)
+        public static async Task UnityConsole(string str)
         {
-            await PlaneSingleton.SendMessage($"Oculus: {str}");
+            if (PlaneSingleton.PlaneSingletonInstance == null) return;
+            await PlaneSingleton.PlaneSingletonInstance.SendMessage($"Oculus: {str}");
             //var dto = DateTimeOffset.Now;
 
             //var logRec = new MainMessages
@@ -43,6 +47,7 @@ namespace ControlPlane
     {
         public static PlaneSingleton? PlaneSingletonInstance = null;
 
+        public Guid InstanceId { get; set; } = Guid.NewGuid();
         public string DeviceModel { get; set; }
         public string DeviceName { get; set; }
         public string DeviceType { get; set; }
@@ -58,6 +63,10 @@ namespace ControlPlane
 
         public string Kafka_Broker { get; private set; }
         public string Kafka_Schema { get; private set; }
+        public string Kafka_Initial { get; private set; }
+
+        public string Panopticon_Server { get; private set; }
+        public int Panopticon_Port { get; private set; }
 
         public Thread singleThread { get; private set; }
         public bool KeepGoing { get; private set; }
@@ -65,7 +74,7 @@ namespace ControlPlane
 
         public async static void Test(string str)
         {
-            await SendMessage($"Report from Occulus: {str}");
+          //  await SendMessage($"Report from Occulus: {str}");
             //foreach (var v in values)
             //    await SendMessage($"Value: v");
 
@@ -75,26 +84,29 @@ namespace ControlPlane
             //    await SendMessage($"Env: {e.Key}={e.Value}");
         }
 
-        public async void Start()
+        public async Task Start()
         {
+            Console.WriteLine("PlantSingleton starting up");
+
             if (PlaneSingletonInstance != null)
-                Console.WriteLine("PlaneSingletonInstance already constructed");
+                Debug.WriteLine("PlaneSingletonInstance already constructed");
             else
                 PlaneSingletonInstance = this;
 
             if (Started)
             {
-                Console.WriteLine("PlaneSingleton already started");
+                Debug.WriteLine("PlaneSingleton already started");
                 return;
             }
 
             LoadConfig();
 
+            await Connect();
+       
             singleThread = new Thread(PlaneSingletonInstance.Process);
             KeepGoing = true;
             Started = true;
-            singleThread.Start();
-
+          
             await RawSendMessage("Test Startup!");
 
             await RawSendMessage($"DeviceName {DeviceName}");
@@ -102,48 +114,71 @@ namespace ControlPlane
             await RawSendMessage($"DeviceUniqueIdentifier {DeviceUniqueIdentifier}");
             await RawSendMessage($"LoadedDeviceName {LoadedDeviceName}");
 
-            await RawSendMessage($"Raw: {rawString}");
+            //await RawSendMessage($"Raw: {rawString}");
 
             //await RawSendMessage(rawString);
 
             await RawSendMessage($"Broker: {PlaneSingleton.PlaneSingletonInstance.MQTT_Broker}");
             await RawSendMessage($"User: {PlaneSingleton.PlaneSingletonInstance.MQTT_User}");
-            await RawSendMessage($"Password: {PlaneSingleton.PlaneSingletonInstance.MQTT_Password}");
+            //await RawSendMessage($"Password: {PlaneSingleton.PlaneSingletonInstance.MQTT_Password}");
             await RawSendMessage($"Port: {PlaneSingleton.PlaneSingletonInstance.MQTT_Port}");
+
+            singleThread.Start();
         }
 
-        public void Stop()
+        public async Task Stop()
         {
             KeepGoing = false;
         }
 
+        private bool ExitThread = false;
         // This runs in the new thread (when it exits the thread ends)
-        private async void Process()
+        private void Process()
         {
             while (true)
             {
                 try
                 {
-                    doPing();
+                    Debug.WriteLine($"Start Ping");
+                    doPing().Wait();
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error in thread: {ex.Message}");
+                    Debug.WriteLine($"Error in thread: ");
+                    Log.DebugCallback(ex.Message, ex.StackTrace, 0).Wait();
                 }
-
-                Thread.Sleep(30000);
+                finally
+                {
+                    Debug.WriteLine($"End Ping");
+                    Thread.Sleep(60000);
+                }            
             }
         }
 
-        private void doPing()
-        {
-            var req = new HelloRequest()
-            {
-                Name = "oculus"
-            };
+        static int iter = 1;
 
-            var ret = RPCWrapper.Call_Ping(req);
-            Console.WriteLine($"Result: {ret.Result}");
+        private async Task doPing()
+        {
+            if (PlaneSingleton.PlaneSingletonInstance == null) return;
+
+            var channel = new Channel(Panopticon_Server, Panopticon_Port, ChannelCredentials.Insecure);
+        
+            var ping = new PanopticonService.DoPing.DoPingClient(channel);
+            var result = ping.Ping(new PanopticonService.PingRequest
+            {
+                UniqueDeviceId = PlaneSingleton.PlaneSingletonInstance.DeviceUniqueIdentifier,
+                InstanceId = PlaneSingleton.PlaneSingletonInstance.InstanceId.GetUuid(),
+                Iteration = iter++,
+                Current = DateTimeOffset.Now.GetDTO(),
+            });
+
+            // These can change dynamically (server could hand us off)
+            Panopticon_Server = result.PanopticonServer;
+            Panopticon_Port = result.PanopticonPort;
+            Kafka_Broker = result.KafkaBroker;
+            Kafka_Schema = result.KafkaSchema;
+
+            await RawSendMessage($"(Browser) Result: {result.ServerName} {result.InstanceId} {result.Iteration} {result.Current.GetDate()}");
         }
 
         private void LoadConfig()
@@ -166,65 +201,58 @@ namespace ControlPlane
                     vars.Add(ps[0].Trim(), ps[1].Trim());
                 }
 
-            string setR(string s)
+            string setR(string s, string def = null)
             {
                 if (vars.ContainsKey(s))
                     return vars[s];
 
-                return null;
+                return def;
             }
 
             this.MQTT_Broker = setR("MQTT_Broker");
-            var prt = setR("MQTT_Port");
-            this.MQTT_Port = 1883;
-            if (!String.IsNullOrWhiteSpace(prt))
-                this.MQTT_Port = Convert.ToInt32(prt);
+            this.MQTT_Port = Convert.ToInt32(setR("MQTT_Port", "1883"));
             this.MQTT_User = setR("MQTT_User");
             this.MQTT_Password = setR("MQTT_Password");
 
-            //Console.WriteLine(responseFromServer);
+            this.Kafka_Broker = setR("Kafka_Broker");
+            this.Kafka_Schema = setR("Kafka_Schema");
+            this.Kafka_Initial = setR("Kafka_Initial");
+
+            this.Panopticon_Server = setR("Panopticon_Server", "10.0.52.35");
+            this.Panopticon_Port = Convert.ToInt32(setR("Panopticon_Port", "10080"));
+   
+            //Debug.WriteLine(responseFromServer);
         }
 
-        //public static async Task<bool> Publish(string channel, string value)
-        //{
-        //    var factory = new MqttFactory();
-        //    var mqttClient = factory.CreateMqttClient();
 
-            //    if (mqttClient.IsConnected == false)
-            //    {
-            //        Debug.WriteLine("publishing failed");
-            //        return false;
-            //    }
+        public MQTTnet.Client.IMqttClient MqttClient { get; private set; }
 
-            //    var message = new MqttApplicationMessageBuilder()
-            //            .WithTopic(channel)
-            //            .WithPayload(value)
-            //            .WithRetainFlag()
-            //            .Build();
-            //    await mqttClient.PublishAsync(message);
-            //    return true;
-            //}
-
-
-            ////connect to mqtt
-
-        public static MQTTnet.Client.IMqttClient MqttClient { get; private set; }
-
-        public static async Task Connect()
+        public async Task Connect()
         {
-            MqttClient = SetupMQTT(out var options);
-            if (MqttClient == null)
+            Console.WriteLine("MqttClient starting up");
+            MqttClient = await GetNewClient();
+
+            if (MqttClient.IsConnected)
+                 Debug.WriteLine("MQTT: connected and up");
+        }
+
+        public async Task<MQTTnet.Client.IMqttClient> GetNewClient()
+        {
+           var mqttClient = SetupMQTT(out var options);
+            if (mqttClient == null)
             {
-                Console.WriteLine($"Can't Open MQTT");
-                return;
+                Debug.WriteLine($"Can't Open MQTT");
+                return null;
             }
 
-            Debug.WriteLine("MQTT: connecting");
-            await MqttClient.ConnectAsync(options, CancellationToken.None);
-            Debug.WriteLine("MQTT: connected");
+            //Debug.WriteLine("MQTT: connecting");
+            await mqttClient.ConnectAsync(options, CancellationToken.None);
+            //Debug.WriteLine("MQTT: connected");
+
+            return mqttClient;
         }
 
-        private static MQTTnet.Client.IMqttClient? SetupMQTT(out MqttClientOptions options)
+        private MQTTnet.Client.IMqttClient? SetupMQTT(out MqttClientOptions options)
         {
 
             var factory = new MqttFactory();
@@ -261,10 +289,10 @@ namespace ControlPlane
 
         private static List<string> _msgFifo = new List<string>();
 
-        public async static Task SendMessage(string msg)
+        public async Task SendMessage(string msg)
         {
-            //await RawSendMessage(msg);
-            //return;
+            await RawSendMessage(msg);
+            return;
 
             if (msg != null)
                 lock (_msgFifo)
@@ -272,31 +300,35 @@ namespace ControlPlane
 
             while (true)
             {
-                string post;
+                string post=null;
                 lock (_msgFifo)
+                {
+                    post = null;
                     if (_msgFifo.Count > 0)
                         post = _msgFifo[0];
                     else break;
+                }
 
                 if (!await RawSendMessage(post)) break;
 
                 lock (_msgFifo)
+                    if (post!=null)
                     _msgFifo.RemoveAt(0);
             }
         }
 
-        public static async Task<bool> RawSendMessage(string msg)
+        public async Task<bool> RawSendMessage(string msg)
         {
             if (MqttClient == null)
                 await Connect();
 
             if (MqttClient == null)
             {
-                //Console.WriteLine("Mqtt Client not created yet?");
+                //Debug.WriteLine("Mqtt Client not created yet?");
                 return false;
             }
             if (!MqttClient.IsConnected) {
-                //Console.WriteLine("Mqtt Client not connected yet");
+                //Debug.WriteLine("Mqtt Client not connected yet");
                 return false;
             }
 

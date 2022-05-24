@@ -6,28 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="APIProtos\Login.proto" />
     <None Remove="APIProtos\Ping.proto" />
+    <None Remove="Common\Utils.proto" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Grpc.Tools" Version="2.46.0-pre1">
+    <PackageReference Include="Google.Protobuf" Version="3.20.1" />
+    <PackageReference Include="Grpc" Version="2.46.0-pre2" />
+    <PackageReference Include="Grpc.Tools" Version="2.46.0-pre2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Google.Protobuf\Google.Protobuf.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="APIProtos\Login.proto" GrpcServices="Client" />
-    <Protobuf Include="APIProtos\Ping.proto" GrpcServices="Client" />
+    <Protobuf Include="APIProtos\Ping.proto" GrpcServices="Both" />
+    <Protobuf Include="Common\Utils.proto" />
   </ItemGroup>
 
 </Project>

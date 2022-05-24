@@ -10,6 +10,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using MQTTnet.Implementations;
+using System.Diagnostics;
 
 namespace MQTTnet.Extensions.Rpc
 {
@@ -33,10 +34,14 @@ namespace MQTTnet.Extensions.Rpc
             {
                 try
                 {
-                    return await ExecuteAsync(methodName, payload, qualityOfServiceLevel, timeoutToken.Token).ConfigureAwait(false);
+                    Debug.WriteLine($"RPC Execute Start");
+                    var ret = await ExecuteAsync(methodName, payload, qualityOfServiceLevel, timeoutToken.Token).ConfigureAwait(false);
+                    Debug.WriteLine($"RPC Execute Returns");
+                    return ret;
                 }
                 catch (OperationCanceledException exception)
                 {
+                    Debug.WriteLine($"RPC Cancel Throw");
                     if (timeoutToken.IsCancellationRequested)
                     {
                         throw new MqttCommunicationTimedOutException(exception);
@@ -72,6 +77,8 @@ namespace MQTTnet.Extensions.Rpc
                 throw new MqttProtocolViolationException("RPC response topic is empty.");
             }
 
+            Debug.WriteLine($"RPC Build {requestTopic}");
+
             var requestMessage = new MqttApplicationMessageBuilder()
                 .WithTopic(requestTopic)
                 .WithPayload(payload)
@@ -95,6 +102,8 @@ namespace MQTTnet.Extensions.Rpc
                 var subscribeOptions = new MqttClientSubscribeOptionsBuilder()
                     .WithTopicFilter(responseTopic, qualityOfServiceLevel)
                     .Build();
+
+                Debug.WriteLine($"RPC SubScribe {responseTopic}");
 
                 await _mqttClient.SubscribeAsync(subscribeOptions, cancellationToken).ConfigureAwait(false);
                 await _mqttClient.PublishAsync(requestMessage, cancellationToken).ConfigureAwait(false);
@@ -124,6 +133,8 @@ namespace MQTTnet.Extensions.Rpc
 #else
             awaitable.TrySetResult(eventArgs.ApplicationMessage.Payload);
 #endif
+
+            Debug.WriteLine($"RPC Got the result");
 
             // Set this message to handled to that other code can avoid execution etc.
             eventArgs.IsHandled = true;

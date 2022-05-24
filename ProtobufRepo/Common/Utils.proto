@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "PanopticonService";
+
+package PanopticonService;
+
+message Uuid {
+	string Uuid_ = 1;
+}
+
+message DTO {
+	int64 Ticks = 1;  // nanoseconds from time epoch base (Jan 1, 0000?)
+	int32 Offset=2;  // GMT offset seconds
+}

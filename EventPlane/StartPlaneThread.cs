@@ -24,8 +24,10 @@ namespace EventPlane
         private static Thread? singleThread = null;
         private static bool KeepGoing = false;
 
-        private static string SceneProcessor = "TestScene1";
-        private const string broker = "10.0.52.35:9092";
+        private static string CurrentSceneName { get { return ControlPlane.PlaneSingleton.PlaneSingletonInstance.Kafka_Initial; } }
+        private static string Kafka_Broker { get { return ControlPlane.PlaneSingleton.PlaneSingletonInstance.Kafka_Broker; } }
+
+
 
         // Should be able to call this again after a Stop()
         public void Start()
@@ -60,11 +62,11 @@ namespace EventPlane
         {
             try
             {
-                Console.WriteLine($"Start new thread to process messages for {SceneProcessor}");
+                Console.WriteLine($"Start new thread to process messages for {CurrentSceneName}");
 
 
                 await confluentkafka();
-           
+
 
 
                 while (KeepGoing)
@@ -76,7 +78,7 @@ namespace EventPlane
                 Console.WriteLine($"Got error in thread: {ex.Message} {ex.StackTrace}");
             }
 
-            Console.WriteLine($"End thread to process messages for {SceneProcessor}");
+            Console.WriteLine($"End thread to process messages for {CurrentSceneName}");
 
             Started = false;
         }
@@ -91,7 +93,7 @@ namespace EventPlane
 
             // Unity might fix this for us in IL2CPP eventually.
 
-            var config = new ProducerConfig { BootstrapServers = broker, EnableDeliveryReports=false };
+            var config = new ProducerConfig { BootstrapServers = Kafka_Broker, EnableDeliveryReports = false };
 
             // If serializers are not specified, default serializers from
             // `Confluent.Kafka.Serializers` will be automatically used where
@@ -109,7 +111,7 @@ namespace EventPlane
 
             try
             {
-                var dr = await producer.ProduceAsync(SceneProcessor, new Message<string, string> { Value = value, Key = key }); ;
+                var dr = await producer.ProduceAsync(CurrentSceneName, new Message<string, string> { Value = value, Key = key }); ;
                 Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
             }
             catch (ProduceException<string, string> e)
@@ -123,7 +125,7 @@ namespace EventPlane
             var conf = new ConsumerConfig
             {
                 GroupId = "TaskConsumerGroup",
-                BootstrapServers = broker,
+                BootstrapServers = Kafka_Broker,
                 // Note: The AutoOffsetReset property determines the start offset in the event
                 // there are not yet any committed offsets for the consumer group for the
                 // topic/partitions of interest. By default, offsets are committed
@@ -134,7 +136,7 @@ namespace EventPlane
 
             using (var c = new ConsumerBuilder<string, string>(conf).Build())
             {
-                c.Subscribe(SceneProcessor);
+                c.Subscribe(CurrentSceneName);
 
                 CancellationTokenSource cts = new CancellationTokenSource();
                 //Console.CancelKeyPress += (_, e) => {
@@ -263,7 +265,7 @@ namespace EventPlane
         //cluster.Messages.Subscribe(kr => Console.WriteLine($"Message: { kr.Topic}/{kr.Partition} {kr.Offset}: {Encoding.UTF8.GetString((byte[])kr.Value)}"));
         //}
 
-  
+
 
         //private void doConsume(BrokerRouter router, Message message)
         //{

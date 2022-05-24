@@ -47,19 +47,19 @@ namespace PanopticonService
         private void SetupRoutes()
         {
     
-            RPCHandler.Setup(Routes, "ping", do_ping);
+          //  RPCHandler.Setup(Routes, "ping", do_ping);
         }
 
-        public async static Task<Byte[]> do_ping(Byte[] rawReq)
-        {
-            var request = HelloRequest.Parser.ParseFrom(rawReq);
+        //public async static Task<Byte[]> do_ping(Byte[] rawReq)
+        //{
+        //    var request = HelloRequest.Parser.ParseFrom(rawReq);
 
-            Console.WriteLine($"Got Ping: {request.Name}");
+        //    Console.WriteLine($"Got Ping: {request.Name}");
 
-            var response = new HelloReply() { Message = $"Hello! {request.Name}" };
+        //    var response = new HelloReply() { Message = $"Hello! {request.Name}" };
 
-            return response.ToByteArray();
-        }
+        //    return response.ToByteArray();
+        //}
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {

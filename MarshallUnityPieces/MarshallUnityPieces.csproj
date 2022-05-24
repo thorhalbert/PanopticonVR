@@ -9,12 +9,13 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\*.meta&#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\*.dll&#xD;&#xA;copy $(outdir)\*.dll C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\&#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\MarshallUnityPieces.dll&#xD;&#xA;&#xD;&#xA;copy C:\Projects\BrowserSupport\EventPlane\bin\Debug\netstandard2.1\*.dll C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\&#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\System.Diagnostics.DiagnosticSource.dll &#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\Microsoft.Extensions.Logging.Abstractions.dll&#xD;&#xA;&#xD;&#xA;" />
+    <Exec Command="del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\*.meta&#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\*.dll&#xD;&#xA;copy $(outdir)\*.dll C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\&#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\MarshallUnityPieces.dll&#xD;&#xA;&#xD;&#xA;copy C:\Projects\BrowserSupport\EventPlane\bin\Debug\netstandard2.1\*.dll C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\&#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\System.Diagnostics.DiagnosticSource.dll &#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\Microsoft.Extensions.Logging.Abstractions.dll&#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\Google.Protobuf.dll&#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\Grpc*.dll&#xD;&#xA;del C:\Projects\OculusPanopticon\Assets\PanopticonAssemblies\Unity*.dll&#xD;&#xA;" />
   </Target>
 
   <ItemGroup>
     <ProjectReference Include="..\CommandPlane\ControlPlane.csproj" />
     <ProjectReference Include="..\EventPlane\EventPlane.csproj" />
+    <ProjectReference Include="..\SceneManagement\SceneManagement.csproj" />
   </ItemGroup>
 
 </Project>

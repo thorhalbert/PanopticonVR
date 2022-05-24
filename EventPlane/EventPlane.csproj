@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommandPlane\ControlPlane.csproj" />
     <ProjectReference Include="..\EventPlaneMessages\AllPlaneMessages.csproj" />
     <ProjectReference Include="..\Google.Protobuf\Google.Protobuf.csproj" />
     <ProjectReference Include="..\ThirdParty\Confluent.Kafka\Confluent.Kafka.csproj" />

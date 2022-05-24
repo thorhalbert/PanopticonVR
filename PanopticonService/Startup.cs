@@ -35,7 +35,7 @@ namespace PanopticonService
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<DoLogin>();
 
                 endpoints.MapGet("/", async context =>
                 {

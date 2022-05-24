@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdParty", "ThirdParty", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Protobuf", "Google.Protobuf\Google.Protobuf.csproj", "{95C0AFC7-214E-40AE-A575-95CB401DAEF2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmissaryManager", "EmissaryManager\EmissaryManager.csproj", "{8D493240-DE2D-41BC-B3FA-A0750F528EDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmissaryClient", "EmissaryManager\EmissaryClient.csproj", "{8D493240-DE2D-41BC-B3FA-A0750F528EDE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlane", "EventPlane\EventPlane.csproj", "{07EEA014-6CDF-4FB9-973D-BDE81B1E2A28}"
 EndProject
@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confluent.SchemaRegistry.Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confluent.SchemaRegistry", "ThirdParty\Confluent.SchemaRegistry\Confluent.SchemaRegistry.csproj", "{40241342-9250-4401-B39D-9F2421C7E70A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmissaryControl", "EmissaryControl\EmissaryControl.csproj", "{80979022-C345-4FC2-8147-EA3D0A323999}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmissaryService", "EmissaryControl\EmissaryService.csproj", "{80979022-C345-4FC2-8147-EA3D0A323999}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProtobufRepo", "ProtobufRepo\ProtobufRepo.csproj", "{F52C9F42-7BA8-4C61-8170-3C7376D2F113}"
 EndProject
@@ -38,6 +38,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoLayer", "MongoLayer\MongoLayer.csproj", "{D0D2AECD-2AA8-4185-BF12-B7D948B4554E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MQTTnet.Extensions.Rpc", "ThirdParty\MQTTnet.Extensions.Rpc\MQTTnet.Extensions.Rpc.csproj", "{2F6D46BC-02D4-456D-9F34-1645B68E0846}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SceneManagement", "SceneManagement\SceneManagement.csproj", "{B19A8433-C919-4BFE-9E89-120847AA7B65}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronBlock", "ThirdParty\IronBlock\IronBlock.csproj", "{387832C4-974B-4F5D-AA41-6C63F35E1307}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmissaryCommon", "EmissaryCommon\EmissaryCommon.csproj", "{9AF169DF-E353-49EE-8EBD-FE5C67A0BC84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +119,18 @@ Global
 		{2F6D46BC-02D4-456D-9F34-1645B68E0846}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F6D46BC-02D4-456D-9F34-1645B68E0846}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F6D46BC-02D4-456D-9F34-1645B68E0846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B19A8433-C919-4BFE-9E89-120847AA7B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B19A8433-C919-4BFE-9E89-120847AA7B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B19A8433-C919-4BFE-9E89-120847AA7B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B19A8433-C919-4BFE-9E89-120847AA7B65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{387832C4-974B-4F5D-AA41-6C63F35E1307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{387832C4-974B-4F5D-AA41-6C63F35E1307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{387832C4-974B-4F5D-AA41-6C63F35E1307}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{387832C4-974B-4F5D-AA41-6C63F35E1307}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AF169DF-E353-49EE-8EBD-FE5C67A0BC84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AF169DF-E353-49EE-8EBD-FE5C67A0BC84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AF169DF-E353-49EE-8EBD-FE5C67A0BC84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AF169DF-E353-49EE-8EBD-FE5C67A0BC84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +142,7 @@ Global
 		{40241342-9250-4401-B39D-9F2421C7E70A} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
 		{2FA9EA56-100A-4FCE-9120-5E026176633E} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
 		{2F6D46BC-02D4-456D-9F34-1645B68E0846} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
+		{387832C4-974B-4F5D-AA41-6C63F35E1307} = {44D7A1EC-07DD-4462-83D7-49E80D9C2564}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B73B5CC1-2697-4063-9EEE-07AFC5690A8F}

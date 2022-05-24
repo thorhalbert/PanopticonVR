@@ -2,14 +2,32 @@
 
 option csharp_namespace = "PanopticonService";
 
-package greet;
+package PanopticonService;
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
+import "Common/Utils.proto";
+
+
+service DoPing {
+  rpc Ping (PingRequest) returns (PingReply);
 }
 
-// The response message containing the greetings.
-message HelloReply {
-  string message = 1;
+
+message PingRequest {
+	Uuid InstanceId = 1;
+	string UniqueDeviceId = 2;
+	int32 Iteration = 3;
+	DTO Current=4;
+}
+
+message PingReply {
+	string ServerName = 1;
+	Uuid InstanceId = 2;
+	int32 Iteration = 3;
+	DTO Current=4;
+
+	string Panopticon_Server = 10;
+	int32 Panopticon_Port = 11;
+
+	string Kafka_Broker = 20;
+	string Kafka_Schema = 21;
 }

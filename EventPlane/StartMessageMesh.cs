@@ -26,9 +26,13 @@ namespace EventPlane
         private static Thread? singleThread = null;
         private static bool KeepGoing = false;
 
-        private static string SceneProcessor = "TestScene1_msgs";
-        private const string broker = "10.0.52.35:9092";
-        private const string schemaUrl = "http://10.0.52.35:8081";
+        //private static string SceneProcessor = "TestScene1_msgs";
+        //private const string broker = "10.0.52.35:9092";
+        //private const string schemaUrl = "http://10.0.52.35:8081";
+
+        private static string SceneProcessor  { get { return ControlPlane.PlaneSingleton.PlaneSingletonInstance.Kafka_Initial;    }}
+        private static string broker { get { return ControlPlane.PlaneSingleton.PlaneSingletonInstance.Kafka_Broker; } }
+        private static  string schemaUrl { get { return ControlPlane.PlaneSingleton.PlaneSingletonInstance.Kafka_Schema; } }
 
         private int sequence = 0;
 
