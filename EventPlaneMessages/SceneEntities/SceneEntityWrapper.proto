@@ -14,6 +14,13 @@ message Vector3 {
 	double Z=30;
 }
 
+message Quaternion {
+	float X = 10;
+	float Y = 11;
+	float Z = 12;
+	float W = 13;
+}
+
 enum PrivatePayloadTypes {
 	No_Payload = 0;				// Payload will be empty
 	Payload_Json = 1;			// Anything can do this, but inefficient
@@ -32,10 +39,10 @@ message EntityChanged {
 	// Current Information
 	fixed64 LastTick=200;	// Last time we heard from the object
 	Vector3 Position=210;	// Where was at last tick
-	Vector3 Rotation=220;	// Orientation
+	Quaternion Rotation=220;	// Orientation
 	Vector3 Scale=230;		// Current Size (though we may get rid of this -- the entity should control)
-	Vector3 Velocity=240;	// So we can estimate tweening
-	Vector3 Acceleration=250;  // Again for tweening estimate
+//	Vector3 Velocity=240;	// So we can estimate tweening
+//	Vector3 Acceleration=250;  // Again for tweening estimate
 	fixed64 LastMoveTick=290;  // Last time we moved
 
 	Uuid InsideObject=400;	// We're bound onto this object - all above are relative to it's origin
