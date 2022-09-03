@@ -16,6 +16,7 @@
     <ProjectReference Include="..\CommandPlane\ControlPlane.csproj" />
     <ProjectReference Include="..\EventPlane\EventPlane.csproj" />
     <ProjectReference Include="..\SceneManagement\SceneManagement.csproj" />
+    <ProjectReference Include="..\UnityBrowserAPI\UnityBrowserAPI.csproj" />
   </ItemGroup>
 
 </Project>
