@@ -61,7 +61,7 @@ namespace UnityBrowserAPI.Events
 
         static void RegisterUnitySide(int maxSlurp)
         {
-            UnityThread = = Thread.CurrentThread.ManagedThreadId;
+            UnityThread = Thread.CurrentThread.ManagedThreadId;
             UnityMaxSlurp = maxSlurp;
         }
 
