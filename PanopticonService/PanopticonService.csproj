@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <UserSecretsId>24fc1976-39b5-4221-bda1-94fac15b4ac1</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>

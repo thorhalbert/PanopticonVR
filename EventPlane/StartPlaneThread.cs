@@ -3,7 +3,7 @@
 //using KafkaNet.Model;
 //using KafkaNet.Protocol;
 //using Misakai.Kafka;
-using Confluent.Kafka;
+//using Confluent.Kafka;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +18,7 @@ namespace EventPlane
     public class StartPlaneThread
     {
         public static StartPlaneThread? PlaneSingleton { get; private set; }
-        public IProducer<string, string>? producer { get; private set; }
+       // public IProducer<string, string>? producer { get; private set; }
 
         private static bool Started = false;
         private static Thread? singleThread = null;
@@ -93,85 +93,85 @@ namespace EventPlane
 
             // Unity might fix this for us in IL2CPP eventually.
 
-            var config = new ProducerConfig { BootstrapServers = Kafka_Broker, EnableDeliveryReports = false };
+            //var config = new ProducerConfig { BootstrapServers = Kafka_Broker, EnableDeliveryReports = false };
 
-            // If serializers are not specified, default serializers from
-            // `Confluent.Kafka.Serializers` will be automatically used where
-            // available. Note: by default strings are encoded as UTF8.
-            producer = new ProducerBuilder<string, string>(config).Build();
+            //// If serializers are not specified, default serializers from
+            //// `Confluent.Kafka.Serializers` will be automatically used where
+            //// available. Note: by default strings are encoded as UTF8.
+            //producer = new ProducerBuilder<string, string>(config).Build();
 
-            await ProduceTest("startup", "EventPlane Startup");
+            //await ProduceTest("startup", "EventPlane Startup");
 
-            await doAllConsumeAsync();
+            //await doAllConsumeAsync();
         }
 
         private async Task ProduceTest(string key, string value)
         {
-            if (producer == null) return;
+            //if (producer == null) return;
 
-            try
-            {
-                var dr = await producer.ProduceAsync(CurrentSceneName, new Message<string, string> { Value = value, Key = key }); ;
-                Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
-            }
-            catch (ProduceException<string, string> e)
-            {
-                Console.WriteLine($"Delivery failed: {e.Error.Reason}");
-            }
+            //try
+            //{
+            //    var dr = await producer.ProduceAsync(CurrentSceneName, new Message<string, string> { Value = value, Key = key }); ;
+            //    Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
+            //}
+            //catch (ProduceException<string, string> e)
+            //{
+            //    Console.WriteLine($"Delivery failed: {e.Error.Reason}");
+            //}
         }
 
         private async Task doAllConsumeAsync()
         {
-            var conf = new ConsumerConfig
-            {
-                GroupId = "TaskConsumerGroup",
-                BootstrapServers = Kafka_Broker,
-                // Note: The AutoOffsetReset property determines the start offset in the event
-                // there are not yet any committed offsets for the consumer group for the
-                // topic/partitions of interest. By default, offsets are committed
-                // automatically, so in this example, consumption will only start from the
-                // earliest message in the topic 'my-topic' the first time you run the program.
-                AutoOffsetReset = AutoOffsetReset.Latest
-            };
+            //var conf = new ConsumerConfig
+            //{
+            //    GroupId = "TaskConsumerGroup",
+            //    BootstrapServers = Kafka_Broker,
+            //    // Note: The AutoOffsetReset property determines the start offset in the event
+            //    // there are not yet any committed offsets for the consumer group for the
+            //    // topic/partitions of interest. By default, offsets are committed
+            //    // automatically, so in this example, consumption will only start from the
+            //    // earliest message in the topic 'my-topic' the first time you run the program.
+            //    AutoOffsetReset = AutoOffsetReset.Latest
+            //};
 
-            using (var c = new ConsumerBuilder<string, string>(conf).Build())
-            {
-                c.Subscribe(CurrentSceneName);
+            //using (var c = new ConsumerBuilder<string, string>(conf).Build())
+            //{
+            //    c.Subscribe(CurrentSceneName);
 
-                CancellationTokenSource cts = new CancellationTokenSource();
-                //Console.CancelKeyPress += (_, e) => {
-                //    e.Cancel = true; // prevent the process from terminating.
-                //    cts.Cancel();
-                //};
+            //    CancellationTokenSource cts = new CancellationTokenSource();
+            //    //Console.CancelKeyPress += (_, e) => {
+            //    //    e.Cancel = true; // prevent the process from terminating.
+            //    //    cts.Cancel();
+            //    //};
 
-                try
-                {
-                    while (true)
-                    {
-                        try
-                        {
-                            var cr = c.Consume(cts.Token);
-                            var key = cr.Message.Key;
-                            var value = cr.Message.Value;
-                            Console.WriteLine($"Consumed message '{key}/{value}' at: '{cr.TopicPartitionOffset}'.");
+            //    try
+            //    {
+            //        while (true)
+            //        {
+            //            try
+            //            {
+            //                var cr = c.Consume(cts.Token);
+            //                var key = cr.Message.Key;
+            //                var value = cr.Message.Value;
+            //                Console.WriteLine($"Consumed message '{key}/{value}' at: '{cr.TopicPartitionOffset}'.");
 
-                            if (!string.IsNullOrEmpty(key) && key == "test")
-                            {
-                                await ProduceTest("browser", $"Bounce: {value}");
-                            }
-                        }
-                        catch (ConsumeException e)
-                        {
-                            Console.WriteLine($"Error occured: {e.Error.Reason}");
-                        }
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    // Ensure the consumer leaves the group cleanly and final offsets are committed.
-                    c.Close();
-                }
-            }
+            //                if (!string.IsNullOrEmpty(key) && key == "test")
+            //                {
+            //                    await ProduceTest("browser", $"Bounce: {value}");
+            //                }
+            //            }
+            //            catch (ConsumeException e)
+            //            {
+            //                Console.WriteLine($"Error occured: {e.Error.Reason}");
+            //            }
+            //        }
+            //    }
+            //    catch (OperationCanceledException)
+            //    {
+            //        // Ensure the consumer leaves the group cleanly and final offsets are committed.
+            //        c.Close();
+            //    }
+            //}
         }
 
         //private async void Process_kafka_net()

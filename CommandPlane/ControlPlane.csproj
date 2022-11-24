@@ -15,13 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Net.Mqtt" Version="0.6.16-beta" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ProtobufRepo\ProtobufRepo.csproj" />
-    <ProjectReference Include="..\ThirdParty\MQTTnet.Extensions.Rpc\MQTTnet.Extensions.Rpc.csproj" />
-    <ProjectReference Include="..\ThirdParty\MQTTnet\MQTTnet.csproj" />
   </ItemGroup>
 
 </Project>

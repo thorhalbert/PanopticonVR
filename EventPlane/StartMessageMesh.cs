@@ -1,8 +1,8 @@
 ﻿
-using Confluent.Kafka;
-using Confluent.Kafka.SyncOverAsync;
-using Confluent.SchemaRegistry;
-using Confluent.SchemaRegistry.Serdes;
+//using Confluent.Kafka;
+//using Confluent.Kafka.SyncOverAsync;
+//using Confluent.SchemaRegistry;
+//using Confluent.SchemaRegistry.Serdes;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using PanopticonEventPlaneOperations;
@@ -19,8 +19,8 @@ namespace EventPlane
     public class StartMessageMesh
     {
         public static StartMessageMesh? PlaneSingleton { get; private set; }
-        public IProducer<string, MainMessages>? producer { get; private set; }
-        internal ProtobufSerializer<MainMessages>? mainMessageSerializer { get; private set; }
+       // public IProducer<string, MainMessages>? producer { get; private set; }
+       // internal ProtobufSerializer<MainMessages>? mainMessageSerializer { get; private set; }
 
         private static bool Started = false;
         private static Thread? singleThread = null;
@@ -37,7 +37,7 @@ namespace EventPlane
         private int sequence = 0;
 
         public Guid SessionGuid { get; private set; }
-        internal ProtobufDeserializer<MainMessages>? mainMessageDeserializer { get; private set; }
+      //  internal ProtobufDeserializer<MainMessages>? mainMessageDeserializer { get; private set; }
 
         // Should be able to call this again after a Stop()
         public void Start()
@@ -106,23 +106,23 @@ namespace EventPlane
             // Unity might fix this for us in IL2CPP eventually.
 
      
-            var serSchemaConf = new SchemaRegistryConfig {Url=schemaUrl,  };
-            var serSchema = new CachedSchemaRegistryClient(serSchemaConf);
+            //var serSchemaConf = new SchemaRegistryConfig {Url=schemaUrl,  };
+            //var serSchema = new CachedSchemaRegistryClient(serSchemaConf);
       
-            var proser = new ProtobufSerializerConfig { AutoRegisterSchemas = true };
-            mainMessageSerializer = new ProtobufSerializer<MainMessages>(serSchema, proser);
+            //var proser = new ProtobufSerializerConfig { AutoRegisterSchemas = true };
+            //mainMessageSerializer = new ProtobufSerializer<MainMessages>(serSchema, proser);
 
-            var prodes = new ProtobufDeserializerConfig();
-            mainMessageDeserializer = new ProtobufDeserializer<MainMessages>(prodes);
+            //var prodes = new ProtobufDeserializerConfig();
+            //mainMessageDeserializer = new ProtobufDeserializer<MainMessages>(prodes);
 
-            var config = new ProducerConfig { BootstrapServers = broker, EnableDeliveryReports = false };
+            //var config = new ProducerConfig { BootstrapServers = broker, EnableDeliveryReports = false };
 
-            // If serializers are not specified, default serializers from
-            // `Confluent.Kafka.Serializers` will be automatically used where
-            // available. Note: by default strings are encoded as UTF8.
-            producer = new ProducerBuilder<string, MainMessages>(config)
-                .SetValueSerializer(mainMessageSerializer)           
-                .Build();
+            //// If serializers are not specified, default serializers from
+            //// `Confluent.Kafka.Serializers` will be automatically used where
+            //// available. Note: by default strings are encoded as UTF8.
+            //producer = new ProducerBuilder<string, MainMessages>(config)
+            //    .SetValueSerializer(mainMessageSerializer)           
+            //    .Build();
             
             //await ProduceTest("startup", "EventPlane Startup");
 
@@ -132,7 +132,7 @@ namespace EventPlane
         public async static Task SendMessage(MainMessages message)
         {
             if (PlaneSingleton == null) return;
-            if (PlaneSingleton.producer == null) return;
+       //     if (PlaneSingleton.producer == null) return;
 
             //var servicePool = new System.Collections.Concurrent.ConcurrentQueue<MainMessages>();
             //servicePool.Enqueue(message);
@@ -144,30 +144,30 @@ namespace EventPlane
 
             message.SessionSequence = PlaneSingleton.sequence++;
 
-            var dr = await PlaneSingleton.producer.ProduceAsync(SceneProcessor,
-                new Message<string, MainMessages> { Value = message, Key = PlaneSingleton.SessionGuid.ToString() });
-            Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
+     //       var dr = await PlaneSingleton.producer.ProduceAsync(SceneProcessor,
+     //           new Message<string, MainMessages> { Value = message, Key = PlaneSingleton.SessionGuid.ToString() });
+     //       Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
         }
 
         private async Task doAllConsumeAsync()
         {
-            var conf = new ConsumerConfig
-            {
-                GroupId = "TaskConsumerGroup",
-                BootstrapServers = broker,
-                // Note: The AutoOffsetReset property determines the start offset in the event
-                // there are not yet any committed offsets for the consumer group for the
-                // topic/partitions of interest. By default, offsets are committed
-                // automatically, so in this example, consumption will only start from the
-                // earliest message in the topic 'my-topic' the first time you run the program.
-                AutoOffsetReset = AutoOffsetReset.Latest
-            };
+            //var conf = new ConsumerConfig
+            //{
+            //    GroupId = "TaskConsumerGroup",
+            //    BootstrapServers = broker,
+            //    // Note: The AutoOffsetReset property determines the start offset in the event
+            //    // there are not yet any committed offsets for the consumer group for the
+            //    // topic/partitions of interest. By default, offsets are committed
+            //    // automatically, so in this example, consumption will only start from the
+            //    // earliest message in the topic 'my-topic' the first time you run the program.
+            //    AutoOffsetReset = AutoOffsetReset.Latest
+            //};
 
-            using var c = new ConsumerBuilder<string, MainMessages>(conf)
-                .SetValueDeserializer(mainMessageDeserializer.AsSyncOverAsync())
-                               .Build();
+            //using var c = new ConsumerBuilder<string, MainMessages>(conf)
+            //    .SetValueDeserializer(mainMessageDeserializer.AsSyncOverAsync())
+            //                   .Build();
 
-            c.Subscribe(SceneProcessor);
+        //    c.Subscribe(SceneProcessor);
 
             CancellationTokenSource cts = new CancellationTokenSource();
             //Console.CancelKeyPress += (_, e) => {
@@ -175,36 +175,36 @@ namespace EventPlane
             //    cts.Cancel();
             //};
 
-            try
-            {
-                while (KeepGoing)
-                {
-                    try
-                    {
-                        var cr = c.Consume(cts.Token);
-                        var key = cr.Message.Key;
-                        var value = cr.Message.Value;
+            //try
+            //{
+            //    while (KeepGoing)
+            //    {
+            //        try
+            //        {
+            //            var cr = c.Consume(cts.Token);
+            //            var key = cr.Message.Key;
+            //            var value = cr.Message.Value;
 
-                        //  if (key == SessionGuid) return;  // Don't need to see our own messages
+            //            //  if (key == SessionGuid) return;  // Don't need to see our own messages
 
-                        await ProcessMessage(cr, key, value);
-                    }
-                    catch (ConsumeException e)
-                    {
-                        Console.WriteLine($"Error occured: {e.Error.Reason}");
-                    }
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                // Ensure the consumer leaves the group cleanly and final offsets are committed.
-                c.Close();
-            }
+            //            await ProcessMessage(cr, key, value);
+            //        }
+            //        catch (ConsumeException e)
+            //        {
+            //            Console.WriteLine($"Error occured: {e.Error.Reason}");
+            //        }
+            //    }
+            //}
+            //catch (OperationCanceledException)
+            //{
+            //    // Ensure the consumer leaves the group cleanly and final offsets are committed.
+            //    c.Close();
+            //}
         }
 
-        private async Task ProcessMessage(ConsumeResult<string, MainMessages> cr, string key, MainMessages value)
-        {
-            Console.WriteLine($"Consumed message '{key}/{value}' at: '{cr.TopicPartitionOffset}'.");
-        }
+        //private async Task ProcessMessage(ConsumeResult<string, MainMessages> cr, string key, MainMessages value)
+        //{
+        //    Console.WriteLine($"Consumed message '{key}/{value}' at: '{cr.TopicPartitionOffset}'.");
+        //}
     }
 }
